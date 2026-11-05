@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-primary-50: #fff6ed;
+  --color-primary-100: #ffead5;
+  --color-primary-200: #fed1aa;
+  --color-primary-300: #fdb074;
+  --color-primary-400: #fb8a3c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #e35a0c;
+  --color-primary-700: #c2470b;
+  --color-primary-800: #9a3712;
+  --color-primary-900: #7c2e12;
+  --color-primary-950: #431407;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-ink: #0b1630;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-ken-burns: ken-burns 24s ease-out both;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ken-burns {
+    from {
+      transform: scale(1.1);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
   }
 }
 
+@theme inline {
+  --font-sans: var(--font-jakarta);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html[lang="ar"] body {
+  font-family: var(--font-cairo), var(--font-sans), system-ui, sans-serif;
+}
+
+/* Letter-spacing breaks the joining of Arabic letters. */
+[dir="rtl"] * {
+  letter-spacing: 0 !important;
+}
+
+::selection {
+  background: var(--color-primary-600);
+  color: #ffffff;
+}
+
+@utility bg-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-primary-600) 18%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+@utility bg-dot-grid-light {
+  background-image: radial-gradient(
+    rgb(255 255 255 / 0.16) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
 }
